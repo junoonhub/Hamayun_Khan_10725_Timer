@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body  background="watch.jpg"> 
+    
+    <div class="timer-container">
+        <h1>Timer</h1>
+        <div class="input-container">
+            <label for="hours">Hours:</label>
+            <input type="number" id="hours" name="hours" min="0" max="24">
+            <br>
+            <label for="minutes">Minutes:</label>
+            <input type="number" id="minutes" name="minutes" min="0" max="59">
+            <br>
+            <label for="seconds">Seconds:</label>
+            <input type="number" id="seconds" name="seconds" min="0" max="59">
+        </div>
+        <button class="start-button" onclick="startTimer()">Start</button>
+        <audio id="alarm" src="timer.wav"></audio>
+    </div>
+</body>
+<script> 
+    function startTimer() {
+        var hours = parseInt(document.getElementById("hours").value);
+        var minutes = parseInt(document.getElementById("minutes").value);
+        var seconds = parseInt(document.getElementById("seconds").value);
+
+        if (isNaN(hours)) {
+            hours = 0;
+        }
+        if (isNaN(minutes)) {
+            minutes = 0;
+        }
+        if (isNaN(seconds)) {
+            seconds = 0;
+        }
+
+        var totalSeconds = hours * 3600 + minutes * 60 + seconds;
+        if (totalSeconds <= 0) {
+            alert("Invalid input");
+            return;
+        }
+
+        var timer = setInterval(function () {
+            totalSeconds--;
+            var hours = Math.floor(totalSeconds / 3600);
+            var minutes = Math.floor((totalSeconds - hours * 3600) / 60);
+            var seconds = totalSeconds - hours * 3600 - minutes * 60;
+            document.getElementById("hours").value = hours;
+            document.getElementById("minutes").value = minutes;
+            document.getElementById("seconds").value = seconds;
+            if (totalSeconds <= 0) {
+                clearInterval(timer);
+                document.getElementById("alarm").play();
+                alert("Time's up!");
+            }
+        }, 1000);
+    }
+</script>
+
+</html>
